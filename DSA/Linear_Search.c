@@ -1,4 +1,5 @@
 #include<stdio.h>
+
 void accept();
 void display();
 void linearsearch();
