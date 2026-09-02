@@ -8,6 +8,7 @@ struct node
 };
 
 struct node *temp,*next,*head=NULL;
+
 struct node *create(struct node *);
 void display(struct node *);
 struct node *insert_first(struct node *);
@@ -19,9 +20,10 @@ struct node *delete(struct node *);
 int search(struct node *,int);
 struct node *rev(struct node *);
 
-void main()
+int main()
 {
     int ch,sno;
+
     do
     {
         printf("\nMenu\n");
@@ -37,56 +39,80 @@ void main()
         printf("10.reversed linked list\n");
         printf("11.exit\n");
 
-    printf("enter your choice\n");
-    scanf("%d",&ch);
-    switch(ch)
-    {
-        case 1:head=create(head);
-            break;
+        printf("enter your choice\n");
+        scanf("%d",&ch);
 
-        case 2:
-            printf("linked list is\n");
-            display(head);
-            break;
+        switch(ch)
+        {
+            case 1:
+                head=create(head);
+                break;
 
-        case 3:head=insert_first(head);
-            break;
+            case 2:
+                printf("linked list is\n");
+                display(head);
+                break;
 
-        case 4:insert_last(head);
-            break;
+            case 3:
+                head=insert_first(head);
+                break;
 
-        case 5:head=insert(head);
-            break;
+            case 4:
+                insert_last(head);
+                break;
 
-        case 6:head=del_first(head);
-            break;
+            case 5:
+                head=insert(head);
+                break;
 
-        case 7:del_last(head);
-            break;
+            case 6:
+                head=del_first(head);
+                break;
 
-        case 8:head=delete(head);
-            break;
+            case 7:
+                head=del_last(head);
+                break;
 
-        case 9:printf("enter element to search\n");
-        scanf("%d",&sno);
-        if(search(head,sno)==1)
-            printf("search successful");
-        else
-            printf("search fail");
-            break;
+            case 8:
+                head=delete(head);
+                break;
 
-        case 10:head=rev(head);
-            break;
-    }
- }
-    while(ch!=11);
+            case 9:
+                printf("enter element to search\n");
+                scanf("%d",&sno);
+
+                if(search(head,sno)==1)
+                    printf("search successful");
+                else
+                    printf("search fail");
+
+                break;
+
+            case 10:
+                head=rev(head);
+                break;
+
+            case 11:
+                break;
+
+            default:
+                printf("Invalid choice\n");
+        }
+
+    }while(ch!=11);
+
+    return 0;
 }
+
 struct node *create(struct node *h)
 {
     temp=(struct node *)malloc(sizeof(struct node));
+
     temp->link=NULL;
+
     printf("\n enter data");
     scanf("%d",&temp->data);
+
     if(h==NULL)
     {
         h=temp;
@@ -94,136 +120,226 @@ struct node *create(struct node *h)
     else
     {
         next=h;
+
         while(next->link!=NULL)
         {
             next=next->link;
         }
+
         next->link=temp;
     }
-    return (h);
+
+    return(h);
 }
+
 void display(struct node *h)
 {
     next=h;
-    while (next!=NULL)
+
+    while(next!=NULL)
     {
         printf("\t%d",next->data);
         next=next->link;
     }
 }
+
 struct node *insert_first(struct node *h)
 {
-   temp=(struct node *)malloc(sizeof(struct node));
-   printf("enter data\n");
-   scanf("%d",&temp->data);
-   temp->link=NULL;
-   temp->link=h;
-   h=temp;
-   return(h);
+    temp=(struct node *)malloc(sizeof(struct node));
+
+    printf("enter data\n");
+    scanf("%d",&temp->data);
+
+    temp->link=NULL;
+    temp->link=h;
+    h=temp;
+
+    return(h);
 }
+
 void insert_last(struct node *h)
 {
-    next=h;
     temp=(struct node *)malloc(sizeof(struct node));
+
     printf("enter data \n");
     scanf("%d",&temp->data);
+
     temp->link=NULL;
-    while(next->link!=NULL)
+
+    if(h==NULL)
     {
-        next=next->link;
+        head=temp;
     }
-    next->link=temp;
+    else
+    {
+        next=h;
+
+        while(next->link!=NULL)
+        {
+            next=next->link;
+        }
+
+        next->link=temp;
+    }
 }
+
 struct node *insert(struct node *h)
 {
-   int p;
-   struct node *prev;
-   printf("enter location \n");
-   scanf("%d",&p);
-   temp=(struct node *)malloc(sizeof(struct node));
-   printf("enter element\n");
-   scanf("%d",&temp->data);
-   temp->link=NULL;
-   if(p==1)
-     {
-       temp->link=head;
-       head=temp;
-     }
-   else
-     {
-       next=head;
-   while(p>1)
-     {
-       prev=next;
-       next=next->link;
-       p--;
-     }
-    prev->link=temp;
-    temp->link=next;
+    int p;
+    struct node *prev;
+
+    printf("enter location \n");
+    scanf("%d",&p);
+
+    temp=(struct node *)malloc(sizeof(struct node));
+
+    printf("enter element\n");
+    scanf("%d",&temp->data);
+
+    temp->link=NULL;
+
+    if(p==1)
+    {
+        temp->link=h;
+        h=temp;
+    }
+    else
+    {
+        next=h;
+
+        while(p>1 && next!=NULL)
+        {
+            prev=next;
+            next=next->link;
+            p--;
+        }
+
+        if(next==NULL && p>1)
+        {
+            printf("Invalid position\n");
+            free(temp);
+            return(h);
+        }
+
+        prev->link=temp;
+        temp->link=next;
+    }
+
+    return(h);
 }
- return (h);
-}
+
 struct node *del_first(struct node *h)
 {
-   next=h;
-   h=h->link;
-   next->link=NULL;
-   free(next);
-   return(h);
+    if(h==NULL)
+    {
+        printf("Linked list is empty\n");
+        return(h);
+    }
+
+    next=h;
+    h=h->link;
+
+    next->link=NULL;
+    free(next);
+
+    return(h);
 }
+
 struct node *del_last(struct node *h)
 {
-   struct node *prev;
-   next=h;
-   while((next->link!=NULL))
-   {
-       prev=next;
-       next=next->link;
-   }
-   prev->link=NULL;
-   free(next);
+    struct node *prev;
+
+    if(h==NULL)
+    {
+        printf("Linked list is empty\n");
+        return(h);
+    }
+
+    if(h->link==NULL)
+    {
+        free(h);
+        return(NULL);
+    }
+
+    next=h;
+
+    while(next->link!=NULL)
+    {
+        prev=next;
+        next=next->link;
+    }
+
+    prev->link=NULL;
+    free(next);
+
+    return(h);
 }
+
 struct node *delete(struct node *h)
 {
-   int p;
-   struct node *prev;
-   printf("enter location\n");
-   scanf("%d",&p);
-   if(p==1)
-   {
-       next=h;
-       h=h->link;
-       free(next);
-   }
-   else
-   {
-       next=h;
-       while(p>1)
-       {
-           prev=next;
-           next=next->link;
-           p--;
-       }
-       prev->link=next->link;
-       free(next);
-   }
-   return (h);
+    int p;
+    struct node *prev;
+
+    printf("enter location\n");
+    scanf("%d",&p);
+
+    if(h==NULL)
+    {
+        printf("Linked list is empty\n");
+        return(h);
+    }
+
+    if(p==1)
+    {
+        next=h;
+        h=h->link;
+        free(next);
+    }
+    else
+    {
+        next=h;
+
+        while(p>1 && next!=NULL)
+        {
+            prev=next;
+            next=next->link;
+            p--;
+        }
+
+        if(next==NULL)
+        {
+            printf("Invalid position\n");
+            return(h);
+        }
+
+        prev->link=next->link;
+        free(next);
+    }
+
+    return(h);
 }
+
 int search(struct node *h,int sno)
 {
     next=h;
+
     while(next!=NULL)
     {
         if(next->data==sno)
-        return (1);
+            return(1);
+
         next=next->link;
     }
+
     return(-1);
 }
+
 struct node *rev(struct node *h)
 {
     struct node *prev,*next,*cur=h;
+
     prev=next=NULL;
+
     while(cur!=NULL)
     {
         next=cur->link;
@@ -231,5 +347,6 @@ struct node *rev(struct node *h)
         prev=cur;
         cur=next;
     }
+
     return(prev);
 }

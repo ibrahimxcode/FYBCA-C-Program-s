@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node {
+struct node
+{
     int data;
     struct node *rlink;
     struct node *llink;
@@ -22,7 +23,8 @@ int main(void)
     struct node *head = NULL;
     int ch, sno;
 
-    do {
+    do
+    {
         printf("\n--- DOUBLY LINKED LIST ---\n");
         printf("1. Create (append one node)\n");
         printf("2. Display\n");
@@ -34,57 +36,73 @@ int main(void)
         printf("8. Delete at Position\n");
         printf("9. Search\n");
         printf("10. Exit\n");
+
         printf("Enter your choice: ");
-        if (scanf("%d", &ch) != 1) {
-            while (getchar() != '\n'); /* clear bad input */
+
+        if (scanf("%d", &ch) != 1)
+        {
+            while (getchar() != '\n');
             continue;
         }
 
-        switch (ch) {
+        switch (ch)
+        {
             case 1:
-                printf("Enter a number: ");
                 head = create(head);
                 break;
+
             case 2:
                 printf("Doubly linked list: ");
                 display(head);
                 printf("\n");
                 break;
+
             case 3:
                 head = insert_first(head);
                 break;
+
             case 4:
                 head = insert_last(head);
                 break;
+
             case 5:
                 head = insert_any(head);
                 break;
+
             case 6:
                 head = del_first(head);
                 break;
+
             case 7:
                 head = del_last(head);
                 break;
+
             case 8:
                 head = del_any(head);
                 break;
+
             case 9:
                 printf("Enter element to search: ");
                 scanf("%d", &sno);
+
                 if (search(head, sno) == 1)
                     printf("Search successful\n");
                 else
                     printf("Search failed\n");
+
                 break;
+
             case 10:
                 printf("Exiting...\n");
                 break;
+
             default:
                 printf("Invalid choice\n");
         }
+
     } while (ch != 10);
 
-    /* free remaining nodes (optional but good practice) */
+    /* Free remaining nodes */
     while (head != NULL)
         head = del_first(head);
 
@@ -94,34 +112,49 @@ int main(void)
 struct node *create(struct node *h)
 {
     struct node *temp = (struct node *)malloc(sizeof(struct node));
-    if (temp == NULL) {
+
+    if (temp == NULL)
+    {
         printf("Memory allocation failed\n");
         return h;
     }
+
     temp->llink = NULL;
     temp->rlink = NULL;
+
+    printf("Enter a number: ");
     scanf("%d", &temp->data);
 
-    if (h == NULL) {
+    if (h == NULL)
+    {
         h = temp;
-    } else {
+    }
+    else
+    {
         struct node *next = h;
+
         while (next->rlink != NULL)
             next = next->rlink;
+
         next->rlink = temp;
         temp->llink = next;
     }
+
     return h;
 }
 
 void display(struct node *h)
 {
-    if (h == NULL) {
+    if (h == NULL)
+    {
         printf("(empty)");
         return;
     }
+
     struct node *next = h;
-    while (next != NULL) {
+
+    while (next != NULL)
+    {
         printf("%d ", next->data);
         next = next->rlink;
     }
@@ -130,30 +163,38 @@ void display(struct node *h)
 struct node *insert_first(struct node *h)
 {
     struct node *temp = (struct node *)malloc(sizeof(struct node));
-    if (temp == NULL) {
+
+    if (temp == NULL)
+    {
         printf("Memory allocation failed\n");
         return h;
     }
+
     printf("Enter data: ");
     scanf("%d", &temp->data);
+
     temp->llink = NULL;
     temp->rlink = h;
 
     if (h != NULL)
         h->llink = temp;
 
-    return temp;   /* new head */
+    return temp;
 }
 
 struct node *insert_last(struct node *h)
 {
     struct node *temp = (struct node *)malloc(sizeof(struct node));
-    if (temp == NULL) {
+
+    if (temp == NULL)
+    {
         printf("Memory allocation failed\n");
         return h;
     }
+
     printf("Enter value: ");
     scanf("%d", &temp->data);
+
     temp->llink = NULL;
     temp->rlink = NULL;
 
@@ -161,21 +202,25 @@ struct node *insert_last(struct node *h)
         return temp;
 
     struct node *next = h;
+
     while (next->rlink != NULL)
         next = next->rlink;
 
     next->rlink = temp;
     temp->llink = next;
+
     return h;
 }
 
 struct node *insert_any(struct node *h)
 {
     int p;
+
     printf("Enter position (1-based): ");
     scanf("%d", &p);
 
-    if (p < 1) {
+    if (p < 1)
+    {
         printf("Invalid position\n");
         return h;
     }
@@ -184,12 +229,16 @@ struct node *insert_any(struct node *h)
         return insert_first(h);
 
     struct node *temp = (struct node *)malloc(sizeof(struct node));
-    if (temp == NULL) {
+
+    if (temp == NULL)
+    {
         printf("Memory allocation failed\n");
         return h;
     }
+
     printf("Enter element: ");
     scanf("%d", &temp->data);
+
     temp->llink = NULL;
     temp->rlink = NULL;
 
@@ -197,22 +246,25 @@ struct node *insert_any(struct node *h)
     struct node *next = h;
     int i = 1;
 
-    while (next != NULL && i < p) {
+    while (next != NULL && i < p)
+    {
         prev = next;
         next = next->rlink;
         i++;
     }
 
-    if (i != p) {               /* position beyond end */
+    if (i != p)
+    {
         printf("Position out of range\n");
         free(temp);
         return h;
     }
 
-    /* insert between prev and next */
+    /* Insert between prev and next */
     prev->rlink = temp;
     temp->llink = prev;
     temp->rlink = next;
+
     if (next != NULL)
         next->llink = temp;
 
@@ -221,48 +273,59 @@ struct node *insert_any(struct node *h)
 
 struct node *del_first(struct node *h)
 {
-    if (h == NULL) {
+    if (h == NULL)
+    {
         printf("List is empty\n");
         return NULL;
     }
 
     struct node *temp = h;
+
     h = h->rlink;
+
     if (h != NULL)
         h->llink = NULL;
 
     free(temp);
+
     return h;
 }
 
 struct node *del_last(struct node *h)
 {
-    if (h == NULL) {
+    if (h == NULL)
+    {
         printf("List is empty\n");
         return NULL;
     }
 
-    if (h->rlink == NULL) {     /* only one node */
+    if (h->rlink == NULL)
+    {
         free(h);
         return NULL;
     }
 
     struct node *next = h;
+
     while (next->rlink != NULL)
         next = next->rlink;
 
     next->llink->rlink = NULL;
+
     free(next);
+
     return h;
 }
 
 struct node *del_any(struct node *h)
 {
     int p;
+
     printf("Enter position (1-based): ");
     scanf("%d", &p);
 
-    if (p < 1 || h == NULL) {
+    if (p < 1 || h == NULL)
+    {
         printf("Invalid position or empty list\n");
         return h;
     }
@@ -274,32 +337,40 @@ struct node *del_any(struct node *h)
     struct node *next = h;
     int i = 1;
 
-    while (next != NULL && i < p) {
+    while (next != NULL && i < p)
+    {
         prev = next;
         next = next->rlink;
         i++;
     }
 
-    if (next == NULL) {
+    if (next == NULL)
+    {
         printf("Position out of range\n");
         return h;
     }
 
     prev->rlink = next->rlink;
+
     if (next->rlink != NULL)
         next->rlink->llink = prev;
 
     free(next);
+
     return h;
 }
 
 int search(struct node *h, int sno)
 {
     struct node *next = h;
-    while (next != NULL) {
+
+    while (next != NULL)
+    {
         if (next->data == sno)
             return 1;
+
         next = next->rlink;
     }
-    return 0;   /* 0 = not found (cleaner than -1) */
+
+    return 0;
 }
