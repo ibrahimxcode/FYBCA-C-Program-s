@@ -1,51 +1,46 @@
-#include<stdio.h>
+#include <stdio.h>
 
 void accept();
 void display();
-void linearsearch();
-int a[20],n;
+void linearsearching();
+int a[100], n, x, i;
 
-void main()
-{
+void main() {
     accept();
     display();
-    linearsearch();
+    linearsearching();
 }
 
 void accept()
 {
-    int i;
-    printf("\nenter a limit");
-    scanf("%d",&n);
-    printf("enter array elements\n");
+    printf("Enter how many elements you want to insert:-");
+    scanf(" %d", &n);
     for(i=0;i<n;i++)
-    {
-        scanf("%d",&a[i]);
-    }
+        {
+            printf("\nEnter Element %d :-", i+1);
+            scanf(" %d", &a[i]);
+        }
 }
 void display()
 {
-    int i;
-    printf("array elements are:\n");
+    printf("\nEntterd Elements Are:-");
     for(i=0;i<n;i++)
-    {
-        printf("\n%d",a[i]);
-    }
+        {
+            printf("\t %d",a[i]);
+        }
 }
-
-void linearsearch()
+void linearsearching()
 {
-    int x,i;
-    printf("\n enter the element which you want to search");
-    scanf("%d",&x);
+    printf("\nEnter which number do you want to search :-");
+    scanf(" %d", &x);
     for(i=0;i<n;i++)
-    {
         if(x==a[i])
         {
-            printf("%d found at position %d",x,i+1);
+            printf("\nElement %d Found At Position %d", x, i+1);
             break;
         }
-    }
     if(i==n)
-        printf("\n%d not found in aray",x);
+    {
+        printf("\nEntered Element %d Not Present In Array", x);
+    }
 }
