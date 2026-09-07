@@ -1,91 +1,80 @@
-#include<stdio.h>
+#include <stdio.h>
 
 void accept();
 void display();
-void bubble_sort();
-void binarysearch();
+void bubblesort();
+void binarysearching();
+int a[100], n, x, i, j, temp;
 
-int a[20], n;
-
-int main()
-{
+void main() {
     accept();
-    bubble_sort();
     display();
-    binarysearch();
-    return 0;
+    bubblesort();
+    binarysearching();
 }
 
 void accept()
 {
-    int i;
-    printf("Enter limit: ");
-    scanf("%d", &n);
-
-    printf("Enter array elements:\n");
-    for(i = 0; i < n; i++)
-    {
-        scanf("%d", &a[i]);
-    }
-}
-
-void bubble_sort()
-{
-    int i, j, temp;
-
-    for(i = 0; i < n - 1; i++)
-    {
-        for(j = 0; j < n - 1 - i; j++)
+    printf("Enter how many elements you want to insert:-");
+    scanf(" %d", &n);
+    for(i=0;i<n;i++)
         {
-            if(a[j] > a[j + 1])
-            {
-                temp = a[j];
-                a[j] = a[j + 1];
-                a[j + 1] = temp;
-            }
+            printf("\nEnter Element %d :-", i+1);
+            scanf(" %d", &a[i]);
         }
-    }
 }
-
 void display()
 {
-    int i;
-
-    printf("\nSorted array:\n");
-    for(i = 0; i < n; i++)
-    {
-        printf("%d ", a[i]);
-    }
+    printf("\nYou're unsorted Array is :-");
+    for(i=0;i<n;i++)
+        {
+            printf("\t %d",a[i]);
+        }
 }
-
-void binarysearch()
+void bubblesort()
 {
-    int x, start, end, mid;
-
-    printf("\nEnter the element to search: ");
-    scanf("%d", &x);
-
-    start = 0;
-    end = n - 1;
-
-    while(start <= end)
-    {
-        mid = (start + end) / 2;
-
-        if(a[mid] == x)
+    for(i=0;i<n-1;i++)
         {
-            printf("Element found at position %d", mid + 1);
-            return;
+            for(j=0;j<n-1-i;j++)
+            {
+                if(a[j]>a[j+1])
+                    {
+                       temp = a[j];
+                       a[j] = a[j+1];
+                       a[j+1] = temp;
+                    }
+            }
         }
-        else if(x > a[mid])
+}
+void binarysearching()
+{
+    printf("\nHere is You're sorted array :-");
+    for(i=0;i<n;i++)
         {
-            start = mid + 1;
+            printf("\t %d",a[i]);
         }
-        else
+    printf("\nEntered Which Elements you want to find :-");
+    scanf(" %d", &x);
+    int start = 0;
+    int End = n-1;
+    while(start<=End)
         {
-            end = mid - 1;
+            int mid = (start + End) / 2;
+            if(x == a[mid])
+            {
+                printf("\n Element %d Found at position %d", x, mid + 1);
+                break;
+            }
+            else if( x > a[mid])
+            {
+                start = mid +1;
+            }
+            else
+            {
+                End = mid - 1;
+            }
         }
+    if(x == n){
+                printf("\nEntered Element %d NOT found in array", x);
     }
-
-    printf("Element not found.");
 }
