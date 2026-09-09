@@ -55,19 +55,19 @@ void display()
 
 void insertionsort()
 {
-    int i, j, temp;
+    int i, prev, curr;
 
-    for(i = 1; i < n; i++)
+    for(i = 1; i < n; i++) // we show i our unsorted arrays first element as i = 1;
     {
-        temp = a[i];
-        j = i - 1;
+        curr = a[i];
+        prev = i - 1;
 
-        while(j >= 0 && a[j] > temp)
+        while(prev >= 0 && a[prev] > curr)
         {
-            a[j + 1] = a[j];
-            j--;
+            a[prev + 1] = a[prev]; // asing prev value to next element
+            prev--;// backword loop
         }
 
-        a[j + 1] = temp;
+        a[prev + 1] = curr;//placing the current element at in it position
     }
 }
